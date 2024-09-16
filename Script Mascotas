@@ -1,0 +1,70 @@
+-- 1. Creando la base de datos
+CREATE DATABASE Mascotas;
+USE Mascotas;
+
+-- 2. Creando las tablas 
+CREATE TABLE Cliente(
+cedulaCliente int(11) primary key,
+nombreCliente varchar(15),
+apellidoCliente varchar(15),
+direccionCliente varchar(15),
+telefono int(10),
+
+idMascotaFK int(11)
+);
+
+CREATE TABLE Producto(
+codigoProdcto int(11) primary key,
+nombreProducto varchar(15),
+marcca varchar(15),
+precio float,
+cedulaClienteFK int(11)
+);
+
+CREATE TABLE Mascota(
+idMascota int(11) primary key,
+nombreMascota varchar(15),
+generoMascota varchar(15),
+cantidad int(10)
+);
+
+
+CREATE TABLE Mascota_Vacuna(
+codigoVacunaFK int(11),
+idMascotaFK int(11),
+enfermedad varchar(11)
+);
+
+CREATE TABLE Vacuna(
+codigoVacuna int(11) primary key,
+nombreVacuna varchar(15),
+dosisVacuna int(10),
+enfermedad varchar (15)
+);
+
+-- 3. Agregando las relaciones
+alter table Cliente
+add constraint FKidMascota
+foreign key(idMascotaFK)
+references Mascota(idMascota);
+
+ALTER TABLE Producto
+ADD CONSTRAINT FKcedulaCliente
+foreign key (cedulaClienteFK)
+references Cliente(cedulaCliente);
+
+ALTER TABLE Mascota_Vacuna
+ADD CONSTRAINT FKcodigoVacuna
+FOREIGN KEY (codigoVacunaFK)
+REFERENCES Vacuna(codigoVacuna);
+
+ALTER TABLE Mascota_Vacuna
+ADD CONSTRAINT FKidMascota
+FOREIGN KEY (idMascotaFK)
+REFERENCES Mascota(idMascota);
+
+-- 4. Alterar cantidad de producto debe ser obligatoria
+ALTER TABLE Producto 
+ADD cantidad_producto int(11) not null;
+
+-- 5. 
