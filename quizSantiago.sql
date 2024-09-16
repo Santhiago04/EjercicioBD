@@ -68,3 +68,6 @@ alter table producto add cantidad int not null;
 
 /*punto 5*/
 alter table mascota CHANGE column cantidad cantidadMascota;
+
+/*punto 6*/
+alter table mascota_vacuna rename to detalleVacuna;
