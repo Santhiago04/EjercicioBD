@@ -1,0 +1,47 @@
+create database biblioteca;
+use biblioteca;
+drop table libro;
+drop table miembro;
+drop table prestamo;
+drop table autor;
+create table libro(
+id_libro varchar(20) primary key,
+titulo varchar(50) not null,
+identificacion_autorFK varchar(20),
+anio_publicacion year not null,
+estado_libro bool not null);
+create table autor(
+id_autor varchar(20)primary key,
+nombre_autor varchar(30) not null,
+fecha_nacimiento date not null);
+create table miembro(
+identificacion_miembro int auto_increment primary key,
+nombre_miembro varchar(20) not null,
+direccion_miembro varchar(20),
+fecha_inscripcion date not null,
+estado_miembro bool);
+create table prestamo(
+cod_prestamo int auto_increment primary key,
+id_libroFK varchar(20),
+id_miembroFK int,
+fecha_prestamo date,
+fecha_devolucion date,
+estado_libro bool);
+
+alter table libro
+add constraint FKautorlibro
+foreign key(identificacion_autorFK)
+references autor(id_autor);
+
+alter table prestamo
+add constraint FKcodlibro
+foreign key(id_libroFK)
+references libro(id_libro);
+
+alter table prestamo
+add constraint FKidusuario
+foreign key(id_miembroFK)
+references miembro(identificacion_miembro);
+
+alter table autor add column email varchar(50)
+
