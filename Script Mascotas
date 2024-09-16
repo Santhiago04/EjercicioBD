@@ -67,4 +67,7 @@ REFERENCES Mascota(idMascota);
 ALTER TABLE Producto 
 ADD cantidad_producto int(11) not null;
 
--- 5. 
+-- 5. Cambiar nombre de columna cantidad a cantidadMascota
+ALTER TABLE Mascota
+RENAME cantidad cantidadMascota
+
