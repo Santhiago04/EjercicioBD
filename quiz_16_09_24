@@ -1,0 +1,71 @@
+/*primer punto*/
+create database mascotas;
+use mascotas;
+/*creacion de tablas*/
+create table mascota(
+idMascota int(11) primary key,
+nombreMascota varchar(15) ,
+generoMascota varchar(15),
+razaMascota varchar(15),
+cantidad int(10));
+
+create table mascota_vacuna(
+codigovacunaFK int(11),
+idMascotaFK int(11),
+enfermedad varchar(15));
+
+create table vacuna(
+codigoVacuna int(11) primary key,
+nombreVacuna varchar(15),
+dosisVacuna int(10),
+enfermedad varchar(15));
+
+create table cliente(
+cedulaCliente int primary key,
+nombreCliente varchar(15),
+apellidoCliente varchar(15),
+direccionCliente varchar(10),
+telefono int(10),
+idMascotaFK int);
+
+create table producto(
+codigoProducto int(11) primary key,
+nombreProducto varchar(15),
+marca varchar(15),
+precio Float,
+cedulaClienteFK int(11));
+
+/*relaciones entre tablas*/
+
+alter table producto
+add constraint cedula_cliente
+foreign key(cedulaClienteFK)
+references cliente(cedulaCliente);
+
+alter table cliente
+add constraint id_mascotica
+foreign key(idMascotaFK)
+references mascota(idMascota);
+
+alter table mascota_vacuna
+add constraint cod_mascotaFK
+foreign key(idMascotaFK)
+references mascota(idMascota);
+
+alter table mascota_vacuna
+add constraint cod_vacuna
+foreign key(codigoVacunaFK)
+references vacuna(codigoVacuna);
+
+/*cantidad entero obligatorio en producto*/
+
+alter table producto 
+add cantidad int not null;
+
+/*cambiar nombre de columna cantidad a cantidadMascota*/
+alter table mascota
+rename cantidad cantidadMascota;
+
+/*cambiar nombre de mascota_vacuna por detalleVacuna */
+alter table mascota_vacuna
+rename 
