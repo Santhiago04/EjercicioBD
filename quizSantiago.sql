@@ -67,7 +67,35 @@ references mascota(idMascota);
 alter table producto add cantidad int not null;
 
 /*punto 5*/
-alter table mascota CHANGE column cantidad cantidadMascota;
+alter table mascota CHANGE column cantidad  cantidadMascota int;
 
 /*punto 6*/
-alter table mascota_vacuna rename to detalleVacuna;
+alter table mascota_vacuna rename to detalleVacuna; 
+
+/*************************************************************************/
+
+/*Clase miercoles 18 de septiembre 2024*/
+describe mascota;
+insert into mascota values(1, 'Rusth', 'M', 'Criollo', 1);
+insert into mascota values(2, 'Floky', 'M', 'Criollo', 1);
+insert into mascota values(3, 'Luna', 'F', 'Criollo', 1);
+insert into mascota values(4, '', '', '', '');
+select * from mascota;
+
+describe vacuna;
+insert into vacuna values('1', 'fiebre amarilla', 1, 'fiebre amarilla');
+insert into vacuna values('2', 'malaria', 1, 'malaria');
+
+describe cliente;
+alter table cliente modify telefono varchar(20);
+delete from cliente where cedulaCliente = 1021670731;
+insert into cliente values(1021670731, 'Santiago', 'Gomez', 'calle 1c', '3015390748', 2);
+insert into cliente values(1011520691, 'Juan', 'Pachon', 'Villa Alsacia', '3115395848', 1);
+
+describe producto;
+/*
+insert into producto values(1, 'Shampoo', 'pets', 10500, 1021670731, 1);
+*/
+
+describe mascota;
+select * from mascota;
