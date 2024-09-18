@@ -64,8 +64,23 @@ add cantidad int not null;
 
 /*cambiar nombre de columna cantidad a cantidadMascota*/
 alter table mascota
-rename cantidad cantidadMascota;
+change column cantidad
+cantidadMascota int;
 
 /*cambiar nombre de mascota_vacuna por detalleVacuna */
-alter table mascota_vacuna
-rename 
+alter table mascota_vacuna rename to detalle_vacuna
+
+
+/*clase 18/09
+describe mascota;
+describe cliente;
+describe vacuna;
+insert into mascota values(1,"juanpachon","M","criollo",1),("2","chiquijara","M","criollo",2),(3,"tanka","M","bulldog",1);
+insert into cliente values(987,"Chiqui","jara","callebait","777",2)(123,"Andrés","Miranda","callexd1","3201236547",1);
+insert into producto values(1,"shampoo","pets",10500,53168,1);
+insert into vacuna values(1,"malaria",10,"malaria"),(2,"rabia",5,"rabia");
+select*from mascota;
+select* from cliente;
+select nombreCliente from cliente;
+select razaMascota from mascota;
+
