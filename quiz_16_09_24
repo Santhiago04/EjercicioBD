@@ -68,19 +68,41 @@ change column cantidad
 cantidadMascota int;
 
 /*cambiar nombre de mascota_vacuna por detalleVacuna */
-alter table mascota_vacuna rename to detalle_vacuna
+alter table mascota_vacuna rename to detalle_vacuna;
 
-
-/*clase 18/09
+use mascotas;
+/*clase 18/09*/
 describe mascota;
 describe cliente;
 describe vacuna;
 insert into mascota values(1,"juanpachon","M","criollo",1),("2","chiquijara","M","criollo",2),(3,"tanka","M","bulldog",1);
 insert into cliente values(987,"Chiqui","jara","callebait","777",2)(123,"Andrés","Miranda","callexd1","3201236547",1);
-insert into producto values(1,"shampoo","pets",10500,53168,1);
+insert into producto values(1,"shampoo","pets",10500,987,1);
 insert into vacuna values(1,"malaria",10,"malaria"),(2,"rabia",5,"rabia");
 select*from mascota;
 select* from cliente;
 select nombreCliente from cliente;
 select razaMascota from mascota;
+delete from cliente where cedulaCliente=987;
 
+
+/*clase 20/09/24
+hoy la clase es pura consultas, select, que se puede jugar con los parametros para consultar solo ciertas cosas o mostrarlas con cierto alias*/
+
+select* from cliente;
+select nombreMascota, razaMascota from mascota;
+select cedulaCliente as "documento",direccionCliente as "direccion" from cliente; 
+select nombreCliente from cliente order by cedulaCliente asc;
+select cedulaCliente as "documento",idMascotaFK as "codigo mascota" from cliente order by nombreCliente asc;
+select nombreProducto,marca from producto order by precio desc;
+select nombreProducto from producto where precio>1000;
+select enfermedad from detalle_vacuna where codigovacunaFK=123;
+select nombreProducto from producto where codigoProducto>2 and precio=1000;
+select nombreMascota as "nombre", genero from mascota where razaMascota="criollo" and cantidad=1;
+select idMascota as "id", nombreMascota as "Nombre" from mascota where cantidad=2;
+select nombreVacuna as "Nombre", dosis from vacuna where enfermedad="malaria";
+select enfermedad from vacuna where dosis<10 and enfermedad="rabia";
+select cedulaCliente as "cedula", nombreCliente as "Nombre" from cliente where direccion="callebait" and idMascotaFK=1;
+select direccionCliente as "direccion" from cliente where cedulaCliente=123 or nombreCliente="chiqui";
+select nombreProducto as "Nombre" from producto where marca like "n%";
+/*tarea: hacer dos consultas usando like y not like en todas las tablas de mascotas*/
