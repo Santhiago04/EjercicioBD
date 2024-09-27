@@ -116,4 +116,50 @@ SELECT * FROM Producto WHERE nombreProducto LIKE '%r%';
 SELECT * FROM Venta v
 JOIN DetalleVenta dv ON v.idVenta = dv.idVentaFK
 JOIN Producto p ON dv.idProductoFK = p.codigoBarras
-WHERE p.precioProducto IN (15000, 30000);
+WHERE p.precioProducto BETWEEN 15000 AND 30000;
+
+/* REGISTRAR USUARIOS DANIEL Y TATIANA, también crear un nuevo producto (ropa de bebé)
+   Tatiana va a comprar ropa de bebé (registrar la venta */
+   
+SELECT * FROM Producto;
+INSERT INTO Producto (nombreProducto, categoriaProducto, precioProducto, cantidadProducto)
+VALUES
+('Ropa de bebé', 'Categoria 1', 25000, 5);
+
+SELECT * FROM Cliente;
+-- Agregando los atributos que hacen falta
+
+ALTER TABLE Cliente 
+ADD direccionCliente varchar(50);
+
+ALTER TABLE Cliente
+ADD telefonoCliente int(10);
+
+INSERT INTO Cliente(idCliente, nombreCliente, fechaNacimiento)
+	VALUES (55163118, 'Tatiana Cabrera', '1985-11-24' );
+
+-- Actualizando los datos de un cliente
+UPDATE Cliente 
+SET fechaNacimiento = '1985-11-24', direccionCliente = 'Calle 104 #13-14', telefonoCliente = 3144606918
+WHERE idCliente =55163118;
+
+
+-- Insertando la venta
+ALTER TABLE Venta
+ADD COLUMN idProductoFK int;
+
+
+SELECT * FROM Producto;
+-- Agregando FK de ID producto
+ALTER TABLE Venta 
+ADD CONSTRAINT FOREIGN KEY (idProductoFK)
+REFERENCES Producto(codigoBarras);
+
+ALTER TABLE Venta
+DROP COLUMN productosComprados;
+
+SELECT * FROM Venta;
+INSERT INTO VENTA (idVenta, fechaVenta, idClienteFK, idUsuarioFK, idProductoFK)
+VALUES ('6', '2024-09-27', 55163118, 2, 5);
+
+SELECT * FROM Venta;
