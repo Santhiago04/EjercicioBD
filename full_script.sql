@@ -208,3 +208,34 @@ consultar los productos que compro un cliente especifico
 consultar todos los clientes que han hecho ventas
 */
 select id_clienteFK from detalle_venta_producto inner join Ventas on Ventas.id_venta=detalle_venta_producto.id_ventaFK where detalle_venta_producto.precio_total;
+select nombre_cliente,nombre_usuario from ventas inner join usuarios on usuarios.id_usuario=ventas.id_usuarioFK inner join clientes on clientes.id_cliente=ventas.id_clienteFK;
+select nombre_producto from producto inner join venta on producto.id_producto=venta.id_productoFK inner join clientes on clientes.id_cliente=venta.id_clienteFK where clientes.nombre_cliente="juanpa";
+use tiendaonline;
+/*clase 27/09/24*/
+/*hoy hacemos updates*/
+/*update tabla set campo=new_val where condition*/
+insert into clientes values(5,"Tatiana Cabrera","marzo");
+insert into producto values(5,"98745632","gorro para bebe",10000,5);
+insert into usuarios values(73,"Andrés Miranda","gerente");
+insert into ventas values(5,5,73,27/09/2024);
+insert into detalle_venta_producto values(5,5,10000,2,20000);
+update usuarios set id_usuario=1014860193 where id_usuario=73;
+alter table clientes
+add numtel int;
+
+alter table clientes
+add  dir varchar(20);
+
+alter table clientes 
+change column mes_cumpleanios
+fecha_nacimiento varchar(20);
+
+update clientes set fecha_nacimiento="24/11/1985" where id_cliente=5;
+alter table ventas
+add numorden int;
+update ventas set numorden=20240927 where id_venta=5;
+describe clientes;
+insert into clientes values(55163118,"Tatiana Cabrera",24/11/1985,3144606918,"cll104#13-14");
+update ventas set id_clienteFK=55163118 where id_venta=5;
+delete from clientes where id_cliente=5;
+/* en el proximo episodio:procedimientos almacenados, vistas y triggers*/
