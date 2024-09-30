@@ -116,3 +116,42 @@ consultar los productos que compro un cliente especifico
 consultar todos los clientes que han hecho ventas
 */
 select id_clienteFK from detalle_venta_producto inner join Ventas on Ventas.id_venta=detalle_venta_producto.id_ventaFK where detalle_venta_producto.precio_total;
+
+
+
+
+/*PROCEDIMIENTOS ALMACENADOS, SUBCONSULTAS Y VISTAS*/
+use tiendaonline;
+select * from clientes;
+select nombre_cliente from clientes where id_cliente = 4;
+/*PROCEDIMIENTOS ALMACENADOS -> nos permiten generar subrutinas
+DELIMITER//
+CREATE PROCEDURE nombre_procedimiento(parametros)
+BEGIN
+--LOGICA SENTENCIA QUE SE QUIERA UTILIZAR
+END//
+DELIMITER;
+*/
+
+DELIMITER //
+describe producto;
+create procedure registrarProductos (id int, cod varchar(12), nombre varchar(15), precio int, cantidad int)
+begin
+insert into producto values (id, cad, nombre, precio, cantidad);
+end//
+delimiter ;
+
+call registrarProductos('', '12por', 'marcadores', 12000, 23);
+
+drop procedure registrarProductos; 
+
+create view consultarCliente as select * from clientes;
+select * from consultarCliente;
+
+/*de la tienda online crear:
+- procedimiento para inactivar un cliente
+- procedimiento para consultar los productos que ha comprado un cliente
+- procedimiento para modificar la fecha de nacimiento de cliente
+
+-vista para saber que cliente compro un producto y muestre el numero de orden
+vista para el cliente que mas compras haya hecho*/
