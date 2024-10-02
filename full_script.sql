@@ -239,3 +239,24 @@ insert into clientes values(55163118,"Tatiana Cabrera",24/11/1985,3144606918,"cl
 update ventas set id_clienteFK=55163118 where id_venta=5;
 delete from clientes where id_cliente=5;
 /* en el proximo episodio:procedimientos almacenados, vistas y triggers*/
+use tiendaonline;
+DELIMITER //
+create procedure inactivate_client (id int)
+begin
+delete from clientes where id_cliente=id;
+end //
+DELIMITER ;
+
+DELIMITER //
+create procedure consult_product(id int)
+begin
+select nombre_producto from producto inner join detalle_venta on producto.id_producto=detalle_venta_producto.id_productoFK inner join venta on venta.id_venta=detalle_venta_producto.id_ventaFK inner join cliente on venta.id_clienteFK=cliente.id_cliente where cliente.id_cliente=id;
+end //
+DELIMITER ;
+
+DELIMITER //
+create procedure change_date(x int,y date)
+begin
+update clientes set date=y where id_cliente=x;
+end //
+DELIMITER ;
