@@ -210,3 +210,113 @@ GROUP BY C.id_cliente;
 
 -vista para saber que cliente compro un producto y muestre el numero de orden
 vista para el cliente que mas compras haya hecho*/
+
+
+/*PROCEDIMIENTOS ALMACENADOS, SUBCONSULTAS Y VISTAS*/
+use tiendaonline;
+select * from clientes;
+select nombre_cliente from clientes where id_cliente = 4;
+/*PROCEDIMIENTOS ALMACENADOS -> nos permiten generar subrutinas
+DELIMITER//
+CREATE PROCEDURE nombre_procedimiento(parametros)
+BEGIN
+--LOGICA SENTENCIA QUE SE QUIERA UTILIZAR
+END//
+DELIMITER;
+*/
+
+DELIMITER //
+describe producto;
+create procedure registrarProductos (id int, cod varchar(12), nombre varchar(15), precio int, cantidad int)
+begin
+insert into producto values (id, cad, nombre, precio, cantidad);
+end//
+DELIMITER ;
+
+call registrarProductos('', '12por', 'marcadores', 12000, 23);
+
+drop procedure registrarProductos; 
+
+create view consultarCliente as select * from clientes;
+select * from consultarCliente;
+use tiendaonline;
+
+/*de la tienda online crear:
+- procedimiento para inactivar un cliente
+- procedimiento para consultar los productos que ha comprado un cliente
+- procedimiento para modificar la fecha de nacimiento de cliente
+
+-vista para saber que cliente compro un producto y muestre el numero de orden
+vista para el cliente que mas compras haya hecho*/
+
+describe detalle_venta_producto;
+
+ALTER TABLE Clientes ADD COLUMN activo VARCHAR(10);
+DELIMITER //
+CREATE PROCEDURE inactivarCliente (id_cliente_input INT)
+BEGIN
+UPDATE Clientes SET activo = 'Inactivo' WHERE id_cliente = id_cliente_input;
+END //
+DELIMITER //
+
+create procedure consult_product(id int)
+begin
+select nombre_producto from producto 
+inner join detalle_venta on producto.id_producto=detalle_venta_producto.id_productoFK 
+inner join venta on venta.id_venta=detalle_venta_producto.id_ventaFK 
+inner join cliente on venta.id_clienteFK=cliente.id_cliente where cliente.id_cliente=id;
+end //
+DELIMITER ;
+
+DELIMITER //
+create procedure change_date(x int,y date)
+begin
+update clientes set date=y where id_cliente=x;
+end //
+DELIMITER ;
+ 
+create view productoComprado as select C.nombre_cliente, P.nombre_producto, V.id_venta 
+from Clientes C, Producto P, detalle_venta_producto DV
+join V on C.id_cliete = V.id_clienteFK
+join DV on V.id_venta = DV.id_ventaFK
+join P on P.id_producto = DV.id_productoFK;
+
+create view cliente_con_mas_compras as select C.nombre_cliente, count(V.id_venta) as totalCompras
+from Clientes C, Ventas V
+join V on C.id_cliente = V.id_clienteFK
+group by C.id_cliente;
+
+
+
+
+/*SUBCONSULTAS: Son consultas anidadas dentro de otra consulta
+select campo2, campo3 from tablanegra 
+where columna2 = (select columna2 from tablaroja where condicion)*/
+
+/*consultar los datos de los empleados y su sueldo promedio*/
+select idEmpleado, nombreEmpleado, salarioEmpleado, (select avg(salarioEmpleado) from empleado) as promedio
+from empleado;
+
+select idEmpleado, nombreEmpleado, salarioEmpleado
+from empleado
+where salarioEmpleado > (select avg(salarioEmpleado) from empleado);
+
+select idEmpleado, nombreEmpleado, idArea, nombreArea
+from empleado
+where idArea in (select idArea from area where nombreEmpleado='Santiago');
+
+/*EJERCICIO:
+	1. Calcular los productos que se vendan a un precio mayor del promedio de todos los productos
+    2. Mostrar los clientes que el total de compra sea mayor al promedio de compras de la tienda
+    3. Mostrar el promedio de precios de productos comprados por cliente*/
+    
+describe producto;
+#1
+select nombre_producto
+from producto
+where precio > (select avg(precio) from producto);
+
+#2
+
+
+#3
