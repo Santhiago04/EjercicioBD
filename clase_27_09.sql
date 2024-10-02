@@ -133,8 +133,8 @@ END//
 DELIMITER;
 */
 
-DELIMITER //
 describe producto;
+DELIMITER //
 create procedure registrarProductos (id int, cod varchar(12), nombre varchar(15), precio int, cantidad int)
 begin
 insert into producto values (id, cad, nombre, precio, cantidad);
@@ -147,6 +147,61 @@ drop procedure registrarProductos;
 
 create view consultarCliente as select * from clientes;
 select * from consultarCliente;
+
+
+ALTER TABLE Clientes ADD COLUMN activo BOOLEAN DEFAULT 1;
+DELIMITER //
+CREATE PROCEDURE inactivarCliente (id_cliente_input INT)
+BEGIN
+UPDATE Clientes SET activo = 0 WHERE id_cliente = id_cliente_input;
+END //
+
+DELIMITER //
+CREATE PROCEDURE consultarProductosCliente (id_cliente_input INT)
+BEGIN
+SELECT P.id_producto, P.nombre_producto, DVP.cantidad, DVP.precio_total
+FROM Clientes C
+JOIN Ventas V ON C.id_cliente = V.id_clienteFK
+JOIN detalle_venta_producto DVP ON V.id_venta = DVP.id_ventaFK
+JOIN Producto P ON DVP.id_productoFK = P.id_producto
+WHERE C.id_cliente = id_cliente_input;
+END //
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE modificarMesCumpleaniosCliente (id int, nuevo_mes VARCHAR(20))
+BEGIN
+UPDATE Clientes
+SET mes_cumpleanios = nuevo_mes
+WHERE id_cliente = id;
+END //
+
+DELIMITER ;
+
+
+CREATE VIEW vista_cliente_producto AS
+SELECT C.nombre_cliente, P.nombre_producto, V.id_venta
+FROM Clientes C
+JOIN Ventas V ON C.id_cliente = V.id_clienteFK
+JOIN detalle_venta_producto DVP ON V.id_venta = DVP.id_ventaFK
+JOIN Producto P ON DVP.id_productoFK = P.id_producto;
+
+
+CREATE VIEW vista_cliente_mas_compras AS
+SELECT C.id_cliente, C.nombre_cliente, COUNT(V.id_venta) AS total_compras
+FROM Clientes C
+JOIN Ventas V ON C.id_cliente = V.id_clienteFK
+GROUP BY C.id_cliente
+ORDER BY total_compras DESC
+LIMIT 1;
+
+CREATE VIEW vista_clientes_con_compras AS
+SELECT C.id_cliente, C.nombre_cliente, COUNT(V.id_venta) AS total_compras
+FROM Clientes C
+JOIN Ventas V ON C.id_cliente = V.id_clienteFK
+GROUP BY C.id_cliente;
+
 
 /*de la tienda online crear:
 - procedimiento para inactivar un cliente
