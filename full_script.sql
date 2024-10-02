@@ -239,6 +239,34 @@ insert into clientes values(55163118,"Tatiana Cabrera",24/11/1985,3144606918,"cl
 update ventas set id_clienteFK=55163118 where id_venta=5;
 delete from clientes where id_cliente=5;
 /* en el proximo episodio:procedimientos almacenados, vistas y triggers*/
+
+/*clase 30/09/2024
+hoy derrocharemos subconsultas, vistas, y procedimientos almacenados*/
+use mascotas;
+use tiendaonline;
+select* from cliente;
+update cliente set apellidoCLiente="Corrales" where cedulaCliente=987;
+/*los procedimientos van a ser subrutinas que almacenan info en la bd
+un metodo en back aca se llama un procedimiento
+si creamos una sentencia de consulta eso es una tarea, pero podemos hacer un proceso y ejecutarlo tambien
+los bancos hacen un procedimiento todos los dias, que es el backup
+estos codigos son reutilizables*/
+/*ejemplo procedimiento*/
+DELIMITER //
+create procedure register_product (x int,y varchar(20),z int ,w int)
+begin
+insert into producto values(x,y,z,w);
+END//
+DELIMITER ;
+
+
+/*crear tres procedimientos para
+inactivar un cliente
+consultar los productos que ha comprado un cliente
+modificar la fecha de nacimiento de un cliente
+dos vistas:
+consulta que cliente compro un producto y cual fue su numero de orden
+cliente que mas compras haya hecho*/
 use tiendaonline;
 DELIMITER //
 create procedure inactivate_client (id int)
@@ -260,3 +288,17 @@ begin
 update clientes set date=y where id_cliente=x;
 end //
 DELIMITER ;
+
+/*sueldo mayor que el salario promedio*/
+select id,sueldo from empleado where sueldo>(select avg(sueldo) from empleado);
+
+/*area de un empleado*/
+select idarea from empleado where idempleado=val;
+
+/*quizecito
+calcular los productos que se vendan a un precio mayor al promedio de todos los productos
+mostrar los clientes que el total de compra sea mayor al promedio de compras de la tienda 
+mostrar el promedio de precios de productos comprados por un cliente */
+select nombre_producto, precio from producto where precio>(select avg(precio) from producto);
+select nombre_cliente, total from cliente inner join venta on cliente.id_cliente=venta.id_clienteFK where total>(select avg(precio) from producto);
+select avg(precio) from venta where id_cliente=(value);
