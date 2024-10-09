@@ -298,4 +298,20 @@ HAVING COUNT(*) > 1;
 -- Comparando la cantidad de productos en venta 
 SELECT (SELECT COUNT(*) FROM Producto) AS total_productos,
        (SELECT COUNT(DISTINCT id_productoFK) FROM Venta) AS productos_vendidos;
+
+/***** VISTAS *****/
+--Esta vista muestra el id del producto, su stock, la descripción, y la categoría correspondiente
+CREATE VIEW VistaProducto AS
+SELECT P.id_producto, P.stock, P.descripcion, C.nombreCategoria
+FROM Producto P
+LEFT JOIN Categoria C ON P.id_categoriaFK = C.id_categoria;
+
+--Esta vista mestra cada venta, el producto vendido, el cliente que lo compro y la cantidad
+CREATE VIEW VistaVenta AS
+SELECT V.id_venta, V.fecha_venta, P.descripcion AS Producto, C.nombreCliente AS Cliente, V.cantidad
+FROM Venta V
+JOIN Producto P ON V.id_productoFK = P.id_producto
+JOIN Cliente C ON V.id_clienteFK = C.id_cliente;
+
+
        
