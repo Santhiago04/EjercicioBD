@@ -283,21 +283,77 @@ INSERT INTO Venta (fecha_venta, id_productoFK, id_clienteFK, cantidad) VALUES ('
 SELECT *
 FROM Categoria;
 
-/***** SUBCONSULTAS *****/
--- Cliente con mayor cantidad de compra
-SELECT nombreCliente 
-FROM Cliente 
-INNER JOIN Venta on Venta.id_clientefk = Cliente.id_cliente where Venta.cantidad>1;
 
+/***** CONSULTAS ESPECIFICAS *****/
 -- Buscando productos que estén repetidos 
 SELECT descripcion, COUNT(*)
 FROM Producto
 GROUP BY descripcion
 HAVING COUNT(*) > 1;
 
+--Buscar productos que estén cerca a agotarse, en este caso menor a 5 unidades
+SELECT descripcion, stock
+FROM Producto
+WHERE stock < 5;
+
+--Busca los clientes que no han realizado ninguna compra
+SELECT nombreCliente
+FROM Cliente
+WHERE id_cliente NOT IN (SELECT id_clienteFK FROM Venta);
+
+--Busca los productos que no se han vendido
+SELECT descripcion
+FROM Producto
+WHERE id_producto NOT IN (SELECT id_productoFK FROM Venta);
+
+--Productos con mas de una categoria
+SELECT P.descripcion, COUNT(P.id_categoriaFK) AS total_categorias
+FROM Producto AS P
+GROUP BY P.id_producto
+HAVING COUNT(P.id_categoriaFK) > 1;
+
+--Cuentas ventas se realizan por fecha
+SELECT V.fecha_venta, COUNT(V.id_venta) AS total_ventas
+FROM Venta AS V
+GROUP BY V.fecha_venta;
+
+--Ventas en un rango de fechas
+SELECT P.descripcion, SUM(V.cantidad) AS total_vendido
+FROM Venta AS V
+JOIN Producto AS P ON V.id_productoFK = P.id_producto
+WHERE V.fecha_venta BETWEEN '2024-07-01' AND '2024-09-01'
+GROUP BY P.id_producto;
+
+
+
+/***** CONSULTAS MULTITABLA *****/
+-- Cliente con mayor cantidad de compra
+SELECT nombreCliente 
+FROM Cliente 
+INNER JOIN Venta on Venta.id_clientefk = Cliente.id_cliente where Venta.cantidad>1;
+
+--Cuantas ventas han habido de cada producto
+SELECT P.nombre, COUNT(V.id_venta) AS total_ventas 
+FROM Venta AS V 
+INNER JOIN Producto AS P 
+ON P.id_producto = V.id_productoFK 
+GROUP BY P.id_producto;
+
+
+/***** SUBCONSULTAS *****/
 -- Comparando la cantidad de productos en venta 
 SELECT (SELECT COUNT(*) FROM Producto) AS total_productos,
        (SELECT COUNT(DISTINCT id_productoFK) FROM Venta) AS productos_vendidos;
+
+--Los clientes que han realizado alguna compra después del 1 de octubre de 2024
+SELECT C.nombre, V.fecha 
+FROM Cliente AS C 
+INNER JOIN Venta AS V 
+ON C.id_cliente = V.id_clienteFK 
+WHERE V.id_clienteFK IN (
+    SELECT id_clienteFK 
+    FROM Venta 
+    WHERE fecha > '2024-10-01');
 
 /***** VISTAS *****/
 --Esta vista muestra el id del producto, su stock, la descripción, y la categoría correspondiente
