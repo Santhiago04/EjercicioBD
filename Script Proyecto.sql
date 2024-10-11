@@ -283,50 +283,33 @@ INSERT INTO Venta (fecha_venta, id_productoFK, id_clienteFK, cantidad) VALUES ('
 SELECT *
 FROM Categoria;
 
+-- Selecciona las direcciones
+SELECT direccion FROM Cliente;
 
 /***** CONSULTAS ESPECIFICAS *****/
--- Buscando productos que estén repetidos 
-SELECT descripcion, COUNT(*)
-FROM Producto
-GROUP BY descripcion
-HAVING COUNT(*) > 1;
-
---Buscar productos que estén cerca a agotarse, en este caso menor a 5 unidades
+-- Buscar productos que estén cerca a agotarse, en este caso menor a 5 unidades
 SELECT descripcion, stock
 FROM Producto
-WHERE stock < 5;
+WHERE stock < 7;
 
---Busca los clientes que no han realizado ninguna compra
+-- Busca los clientes que no han realizado ninguna compra
 SELECT nombreCliente
 FROM Cliente
 WHERE id_cliente NOT IN (SELECT id_clienteFK FROM Venta);
 
---Busca los productos que no se han vendido
-SELECT descripcion
+-- Busca los productos que no se han vendido
+describe Producto;
+SELECT descripcion, id_producto
 FROM Producto
 WHERE id_producto NOT IN (SELECT id_productoFK FROM Venta);
 
---Productos con mas de una categoria
-SELECT P.descripcion, COUNT(P.id_categoriaFK) AS total_categorias
-FROM Producto AS P
-GROUP BY P.id_producto
-HAVING COUNT(P.id_categoriaFK) > 1;
-
---Cuentas ventas se realizan por fecha
+-- Cuentas ventas se realizan por fecha
 SELECT V.fecha_venta, COUNT(V.id_venta) AS total_ventas
 FROM Venta AS V
 GROUP BY V.fecha_venta;
 
---Ventas en un rango de fechas
-SELECT P.descripcion, SUM(V.cantidad) AS total_vendido
-FROM Venta AS V
-JOIN Producto AS P ON V.id_productoFK = P.id_producto
-WHERE V.fecha_venta BETWEEN '2024-07-01' AND '2024-09-01'
-GROUP BY P.id_producto;
-
-
 /***** ELIMINACIÓN *****/
---Elimina el producto por ID solamente si este no esta en la tabla venta, osea si no se ha vendido ninguna unidad del producto
+-- Elimina el producto por ID solamente si este no esta en la tabla venta, osea si no se ha vendido ninguna unidad del producto
 DELETE FROM Producto
 WHERE id_producto = 1
 AND id_producto NOT IN (SELECT id_productoFK FROM Venta);
@@ -338,7 +321,14 @@ SELECT nombreCliente
 FROM Cliente 
 INNER JOIN Venta on Venta.id_clientefk = Cliente.id_cliente where Venta.cantidad>1;
 
---Cuantas ventas han habido de cada producto
+-- Ventas en un rango de fechas
+SELECT P.descripcion, SUM(V.cantidad) AS total_vendido
+FROM Venta AS V
+JOIN Producto AS P ON V.id_productoFK = P.id_producto
+WHERE V.fecha_venta BETWEEN '2024-07-01' AND '2024-09-01'
+GROUP BY P.id_producto;
+
+-- Cuantas ventas han habido de cada producto
 SELECT P.nombre, COUNT(V.id_venta) AS total_ventas 
 FROM Venta AS V 
 INNER JOIN Producto AS P 
@@ -352,7 +342,7 @@ GROUP BY P.id_producto;
 SELECT (SELECT COUNT(*) FROM Producto) AS total_productos,
        (SELECT COUNT(DISTINCT id_productoFK) FROM Venta) AS productos_vendidos;
 
---Los clientes que han realizado alguna compra después del 1 de octubre de 2024
+-- Los clientes que han realizado alguna compra después del 1 de octubre de 2024
 SELECT C.nombre, V.fecha 
 FROM Cliente AS C 
 INNER JOIN Venta AS V 
@@ -363,7 +353,7 @@ WHERE V.id_clienteFK IN (
     WHERE fecha > '2024-10-01');
 
 /***** PROCEDIMIENTOS *****/
---Este procedimiento registra una venta
+-- Este procedimiento registra una venta
 DELIMITER //
 CREATE PROCEDURE register_sell(id_venta int,fecha date, id_producto int, id_cliente int, cantidad int)
 BEGIN
@@ -371,7 +361,7 @@ BEGIN
 END //
 DELIMITER ;
 
---Este procedimiento registra un nuevo cliente
+-- Este procedimiento registra un nuevo cliente
 DELIMITER //
 CREATE PROCEDURE registrar_cliente (p_cedula BIGINT, p_nombre VARCHAR(50), p_direccion VARCHAR(100), p_celular BIGINT)
 BEGIN
@@ -381,18 +371,16 @@ DELIMITER ;
 
 
 /***** VISTAS *****/
---Esta vista muestra el id del producto, su stock, la descripción, y la categoría correspondiente
+-- Esta vista muestra el id del producto, su stock, la descripción, y la categoría correspondiente
 CREATE VIEW VistaProducto AS
 SELECT P.id_producto, P.stock, P.descripcion, C.nombreCategoria
 FROM Producto P
 LEFT JOIN Categoria C ON P.id_categoriaFK = C.id_categoria;
 
---Esta vista mestra cada venta, el producto vendido, el cliente que lo compro y la cantidad
+-- Esta vista meustra cada venta, el producto vendido, el cliente que lo compro y la cantidad
+
 CREATE VIEW VistaVenta AS
 SELECT V.id_venta, V.fecha_venta, P.descripcion AS Producto, C.nombreCliente AS Cliente, V.cantidad
 FROM Venta V
 JOIN Producto P ON V.id_productoFK = P.id_producto
 JOIN Cliente C ON V.id_clienteFK = C.id_cliente;
-
-
-       
