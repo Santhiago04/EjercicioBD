@@ -325,6 +325,12 @@ WHERE V.fecha_venta BETWEEN '2024-07-01' AND '2024-09-01'
 GROUP BY P.id_producto;
 
 
+/***** ELIMINACIÓN *****/
+--Elimina el producto por ID solamente si este no esta en la tabla venta, osea si no se ha vendido ninguna unidad del producto
+DELETE FROM Producto
+WHERE id_producto = 1
+AND id_producto NOT IN (SELECT id_productoFK FROM Venta);
+
 
 /***** CONSULTAS MULTITABLA *****/
 -- Cliente con mayor cantidad de compra
@@ -338,6 +344,7 @@ FROM Venta AS V
 INNER JOIN Producto AS P 
 ON P.id_producto = V.id_productoFK 
 GROUP BY P.id_producto;
+
 
 
 /***** SUBCONSULTAS *****/
@@ -354,6 +361,24 @@ WHERE V.id_clienteFK IN (
     SELECT id_clienteFK 
     FROM Venta 
     WHERE fecha > '2024-10-01');
+
+/***** PROCEDIMIENTOS *****/
+--Este procedimiento registra una venta
+DELIMITER //
+CREATE PROCEDURE register_sell(id_venta int,fecha date, id_producto int, id_cliente int, cantidad int)
+BEGIN
+    INSERT INTO Venta VALUES (id_venta,fecha,id_producto,id_cliente, cantidad);
+END //
+DELIMITER ;
+
+--Este procedimiento registra un nuevo cliente
+DELIMITER //
+CREATE PROCEDURE registrar_cliente (p_cedula BIGINT, p_nombre VARCHAR(50), p_direccion VARCHAR(100), p_celular BIGINT)
+BEGIN
+    INSERT INTO Cliente VALUES (p_cedula, p_nombre, p_direccion, p_celular);
+END //
+DELIMITER ;
+
 
 /***** VISTAS *****/
 --Esta vista muestra el id del producto, su stock, la descripción, y la categoría correspondiente
