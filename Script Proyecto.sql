@@ -31,7 +31,7 @@ CREATE TABLE Venta (
 
 CREATE TABLE Categoria (
 	id_categoria INT PRIMARY KEY AUTO_INCREMENT,
-    nombreCategoria VARCHAR (15) NOT NULL
+    nombreCategoria VARCHAR (30) NOT NULL
 );
 
 /***** AGREGANDO LAS RESTRICCIONES *****/
@@ -329,7 +329,7 @@ WHERE V.fecha_venta BETWEEN '2024-07-01' AND '2024-09-01'
 GROUP BY P.id_producto;
 
 -- Cuantas ventas han habido de cada producto
-SELECT P.nombre, COUNT(V.id_venta) AS total_ventas 
+SELECT P.descripcion, COUNT(V.id_venta) AS total_ventas 
 FROM Venta AS V 
 INNER JOIN Producto AS P 
 ON P.id_producto = V.id_productoFK 
@@ -343,14 +343,14 @@ SELECT (SELECT COUNT(*) FROM Producto) AS total_productos,
        (SELECT COUNT(DISTINCT id_productoFK) FROM Venta) AS productos_vendidos;
 
 -- Los clientes que han realizado alguna compra después del 1 de octubre de 2024
-SELECT C.nombre, V.fecha 
+SELECT C.nombreCliente, V.fecha_venta
 FROM Cliente AS C 
 INNER JOIN Venta AS V 
 ON C.id_cliente = V.id_clienteFK 
 WHERE V.id_clienteFK IN (
     SELECT id_clienteFK 
     FROM Venta 
-    WHERE fecha > '2024-10-01');
+    WHERE fecha_venta > '2024-10-01');
 
 /***** PROCEDIMIENTOS *****/
 -- Este procedimiento registra una venta
@@ -375,7 +375,7 @@ DELIMITER ;
 CREATE VIEW VistaProducto AS
 SELECT P.id_producto, P.stock, P.descripcion, C.nombreCategoria
 FROM Producto P
-LEFT JOIN Categoria C ON P.id_categoriaFK = C.id_categoria;
+LEFT JOIN Categoria C ON P.id_categriaFK = C.id_categoria;
 
 -- Esta vista meustra cada venta, el producto vendido, el cliente que lo compro y la cantidad
 
