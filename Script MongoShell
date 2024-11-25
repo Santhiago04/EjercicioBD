@@ -1,99 +1,70 @@
-// AGREGANDO LOS CLIENTES 
-db.clientes.insertMany([
-{nombre: 'CAMILA FERNANDEZ', direccion: 'Calle 45 #23-15', telefono: 3196549873},
-{nombre: 'OLGA LUCIA TRUJILLO', direccion: 'Carrera 15 #72-30', telefono: 3149871234},
-{nombre: 'VICTOR DUEÑAS', direccion: 'Calle 85 #12-21', telefono: 3265437890},
-{nombre: 'OSCAR ALBA', direccion: 'Carrera 9 #113-10', telefono: 3104563892},
-])
-db.clientes.insertMany([
-{nombre: 'JUAN PABLO ROA', direccion: 'Carrera 7 #32-99', telefono: 3231239876},
-{nombre: 'CARLOS MANRIQUE', direccion: 'Calle 13 #20-50', telefono: 3216547895},
-{nombre: 'MAURICIO VILLALBA', direccion: 'Calle 100 #7-80', telefono: 3294567891},
-{nombre: 'NIKO D-HILL', direccion: 'Carrera 68 #22-15', telefono: 3126781234},
-{nombre: 'JUAN GARCIA', direccion: 'Carrera 10 #63-44', telefono: 3205678943},
-{nombre: 'NEFALTY BONILLA', direccion: 'Calle 26 #96-30', telefono: 3136541237},
-{nombre: 'MISAEL RAMIREZ', direccion: 'Calle 129 #13-40', telefono: 3276781234},
-{nombre: 'OLME MARIN', direccion: 'Calle 155 #72-80', telefono: 3115437892},
-{nombre: 'ANDRES CONTRERAS', direccion: 'Avenida Suba #123-45', telefono: 3215431846},
-{nombre: 'JUAN PABLO CHAVARRO', direccion: 'Calle 53 #30-20', telefono: 3244567890},
-{nombre: 'EDUARDO SANDOVAL', direccion: 'Carrera 17 #102-18', telefono: 3171239874},
-])
-
-// AGREGANDO LAS CATEGORIAS
-db.categorias.insertMany([
-  { nombreCategoria: 'Almacenamiento' },
-  { nombreCategoria: 'Computadoras' },
-  { nombreCategoria: 'Memorias RAM' },
-  { nombreCategoria: 'Accesorios' },
-  { nombreCategoria: 'Pantallas y Baterías' }
+use ProyectoIngDatos
+switched to db ProyectoIngDatos
+db.categoria.insertMany([
+    { nombre: "Almacenamiento" },
+    { nombre: "Computadoras" },
+    { nombre: "Memorias RAM" },
+    { nombre: "Accesorios" },
+    { nombre: "Pantallas y Baterías" }
 ]);
 
-// AGREGANDO LOS PRODUCTOS 
-db.productos.insertMany([
-    { stock: 10, descripcion: "UNIDAD DE ESTADO SOLIDO SSD SATA" },
-    { stock: 18, descripcion: "T-FORCE VULCAN Z" },
-    { stock: 8, descripcion: "SSD CRUCIAL BX500" },
-    { stock: 9, descripcion: "SSD LEXAR NS100" },
-    { stock: 8, descripcion: "SSD TIMETEC" },
-    { stock: 10, descripcion: "SSD TIMETEC" },
-    { stock: 7, descripcion: "SSD SP A55" },
-    { stock: 7, descripcion: "SSD SP A55" },
-    { stock: 18, descripcion: "SSD SP A55" },
-    { stock: 15, descripcion: "SSD M2 NVME" },
-    { stock: 5, descripcion: "SSD M.2 NVME SAMSUNG EVO 980" },
-    { stock: 8, descripcion: "SSD M.2 NVME SAMSUNG EVO 970 PLUS" },
-    { stock: 5, descripcion: "SSD M.2 NVME SAMSUNG EVO 970 PLUS" },
-    { stock: 11, descripcion: "SSD M.2 NVME CRUCIAL P2" },
-    { stock: 16, descripcion: "SSD M.2 SATA NGFF 500GB WESTERN DIGITAL BLUE" },
-    { stock: 15, descripcion: "SSD M.2 NVME WESTERN DIGITAL SN570" },
-    { stock: 16, descripcion: "SSD M.2 NVME SABRENT" },
-    { stock: 12, descripcion: "Timetec MAC SSD NVMe PCIe Gen3x4 3D NAND TLC" },
-    { stock: 16, descripcion: "Timetec MAC SSD NVMe PCIe Gen3x4 3D NAND TLC" },
-    { stock: 10, descripcion: "BATERIAS PORTATILES" },
-    { stock: 10, descripcion: "MACBOOK AIR 11\" M2012 - 2015" },
-    { stock: 15, descripcion: "MACBOOK AIR 11\" M2012 - 2015" },
-    { stock: 16, descripcion: "MACBOOK AIR 13\" M2012 - 2017" },
-    { stock: 15, descripcion: "MACBOOK PRO 13\" 2008 -2012" },
-    { stock: 7, descripcion: "MACBOOK 12\" 2015 -2017" },
-    { stock: 15, descripcion: "MACBOOK 15\" 2011" },
-    { stock: 15, descripcion: "MACBOOK PRO RETINA 13\" 2013 - 2015" },
-    { stock: 12, descripcion: "MACBOOK PRO 13\" 2016 - 2017" },
-    { stock: 13, descripcion: "MACBOOK PRO R. 15\" L 2013" },
-    { stock: 11, descripcion: "MACBOOK PRO 13\" 2018 - 2019" },
-    { stock: 13, descripcion: "PANTALLAS" }
+db.cliente.insertMany([
+    { nombre: "Camila Fernández", direccion: "Calle 45 #27-15", telefono: 3196550000 },
+    { nombre: "Olga Lucía Trujillo", direccion: "Carrera 15 #72-30", telefono: 3149871000 },
+    { nombre: "Víctor Dueñas", direccion: "Calle 85 #12-21", telefono: 3265438000 },
+    { nombre: "Oscar Alba", direccion: "Avenida Carrera 9 #113-10", telefono: 3104568000 },
+    { nombre: "Juan Pablo Roa", direccion: "Carrera 7 #32-99", telefono: 3231240000 },
+    { nombre: "Laura Gómez", direccion: "Transversal 78 #45-90", telefono: 3219876543 },
+    { nombre: "Andrés Torres", direccion: "Diagonal 12A #67-45", telefono: 3101234567 },
+    { nombre: "Mariana López", direccion: "Carrera 50 #10-20", telefono: 3134567890 },
+    { nombre: "Julián Martínez", direccion: "Calle 100 #55-30", telefono: 3007654321 },
+    { nombre: "Paola Sánchez", direccion: "Avenida 68 #30-50", telefono: 3223456789 }
 ]);
 
-// AGREGANDO LAS VENTAS
-db.ventas.insertMany([
-    { fecha_venta: "2024-08-27", cantidad: 1 },
-    { fecha_venta: "2024-07-30", cantidad: 1 },
-    { fecha_venta: "2024-08-21", cantidad: 1 },
-    { fecha_venta: "2024-07-24", cantidad: 1 },
-    { fecha_venta: "2024-07-03", cantidad: 1 },
-    { fecha_venta: "2024-07-25", cantidad: 1 },
-    { fecha_venta: "2024-08-09", cantidad: 1 },
-    { fecha_venta: "2024-07-16", cantidad: 1 },
-    { fecha_venta: "2024-09-17", cantidad: 1 },
-    { fecha_venta: "2024-10-02", cantidad: 1 },
-    { fecha_venta: "2024-10-03", cantidad: 1 },
-    { fecha_venta: "2024-07-27", cantidad: 1 },
-    { fecha_venta: "2024-07-27", cantidad: 1 },
-    { fecha_venta: "2024-09-25", cantidad: 1 },
-    { fecha_venta: "2024-07-04", cantidad: 1 },
-    { fecha_venta: "2024-08-06", cantidad: 1 },
-    { fecha_venta: "2024-07-30", cantidad: 1 },
-    { fecha_venta: "2024-09-10", cantidad: 1 },
-    { fecha_venta: "2024-07-05", cantidad: 1 },
-    { fecha_venta: "2024-08-06", cantidad: 1 },
-    { fecha_venta: "2024-10-03", cantidad: 1 },
-    { fecha_venta: "2024-09-21", cantidad: 1 },
-    { fecha_venta: "2024-07-24", cantidad: 1 },
-    { fecha_venta: "2024-08-27", cantidad: 1 },
-    { fecha_venta: "2024-08-05", cantidad: 1 },
-    { fecha_venta: "2024-07-24", cantidad: 1 },
-    { fecha_venta: "2024-07-25", cantidad: 1 },
-    { fecha_venta: "2024-07-18", cantidad: 1 }
+
+// Obtener los IDs de las categorías
+const idAlmacenamiento = db.categoria.findOne({ nombre: "Almacenamiento" })._id;
+const idComputadoras = db.categoria.findOne({ nombre: "Computadoras" })._id;
+
+// Insertar productos vinculados a las categorías
+db.producto.insertMany([
+    { descripcion: "SSD Crucial BX500", categoria: idAlmacenamiento, stock: 50 },
+    { descripcion: "MacBook Pro 2020", categoria: idComputadoras, stock: 10 },
+    { descripcion: "T-Force Vulcan Z", categoria: idAlmacenamiento, stock: 25 },
+    { descripcion: "iMac 21.5 Retina", categoria: idComputadoras, stock: 5 }
 ]);
 
-// CONSULTA GENERAL 
-db.categorias.find().pretty()
+
+// Obtener los IDs de las categorías
+const idMemoriasRAM = db.categoria.findOne({ nombre: "Memorias RAM" })._id;
+const idAccesorios = db.categoria.findOne({ nombre: "Accesorios" })._id;
+const idPantallasBaterias = db.categoria.findOne({ nombre: "Pantallas y Baterías" })._id;
+
+db.Producto.insertMany([
+    { descripcion: "SSD Samsung EVO 970 Plus", categoria: idAlmacenamiento, stock: 20 },
+    { descripcion: "Kingston A2000 M.2 NVMe", categoria: idAlmacenamiento, stock: 15 },
+    { descripcion: "Memoria RAM DDR4 8GB 3200MHz", categoria: idMemoriasRAM, stock: 30 },
+    { descripcion: "Memoria RAM DDR4 16GB 2666MHz", categoria: idMemoriasRAM, stock: 25 },
+    { descripcion: "Cargador USB-C 65W", categoria: idAccesorios, stock: 40 },
+    { descripcion: "Adaptador HDMI a VGA", categoria: idAccesorios, stock: 50 },
+    { descripcion: "Teclado Mecánico Retroiluminado", categoria: idAccesorios, stock: 10 },
+    { descripcion: "Pantalla LED 24 pulgadas", categoria: idPantallasBaterias, stock: 8 },
+    { descripcion: "Batería Externa 20,000mAh", categoria: idPantallasBaterias, stock: 12 },
+    { descripcion: "Monitor Curvo 27 pulgadas", categoria: idPantallasBaterias, stock: 5 }
+]);
+
+// Insertar 10 ventas
+db.venta.insertMany([
+    { fecha: ISODate("2024-11-01"), cliente: idCliente1, producto: idProducto1, cantidad: 2 },
+    { fecha: ISODate("2024-11-02"), cliente: idCliente2, producto: idProducto2, cantidad: 1 },
+    { fecha: ISODate("2024-11-03"), cliente: idCliente3, producto: idProducto3, cantidad: 3 },
+    { fecha: ISODate("2024-11-04"), cliente: idCliente4, producto: idProducto4, cantidad: 4 },
+    { fecha: ISODate("2024-11-05"), cliente: idCliente5, producto: idProducto5, cantidad: 1 },
+    { fecha: ISODate("2024-11-06"), cliente: idCliente1, producto: idProducto3, cantidad: 2 },
+    { fecha: ISODate("2024-11-07"), cliente: idCliente2, producto: idProducto4, cantidad: 5 },
+    { fecha: ISODate("2024-11-08"), cliente: idCliente3, producto: idProducto1, cantidad: 3 },
+    { fecha: ISODate("2024-11-09"), cliente: idCliente4, producto: idProducto5, cantidad: 2 },
+    { fecha: ISODate("2024-11-10"), cliente: idCliente5, producto: idProducto2, cantidad: 1 }
+]);
+
+//
