@@ -67,4 +67,155 @@ db.venta.insertMany([
     { fecha: ISODate("2024-11-10"), cliente: idCliente5, producto: idProducto2, cantidad: 1 }
 ]);
 
-//
+/ 1. Categorías
+// Consultas básicas
+db.categoria.find().pretty(); // Listar todas las categorías disponibles
+db.categoria.find({ nombre: 'Computadoras' }); // Buscar una categoría específica por nombre
+db.categoria.countDocuments(); // Contar cuántas categorías existen
+
+// Consultas específicas
+
+// Buscar categorías que contienen la letra 'a'
+db.categoria.find({ nombre: /a/i });
+
+// Buscar categorías cuyo nombre comience con 'A'
+db.categoria.find({ nombre: /^A/ }); 
+
+// Listar categorías con nombres mayores a 10 caracteres
+db.categoria.find({ $expr: { $gt: [{ $strLenCP: '$nombre' }, 10] } });
+
+// Contar categorías con nombres que incluyan la letra 'o'
+db.categoria.find({ nombre: /o/i }).count(); 
+
+// Verificar si existe una categoría llamada 'Software'
+db.categoria.findOne({ nombre: 'Software' }) !== null; 
+
+// Ordenar las categorías alfabéticamente
+db.categoria.find().sort({ nombre: 1 }); 
+
+// Mostrar solo los nombres de las categorías
+db.categoria.find({}, { _id: 0, nombre: 1 }); 
+
+// 2. Clientes
+// Consultas básicas
+
+// Listar todos los clientes registrados
+db.cliente.find().pretty(); 
+
+// Buscar un cliente por nombre
+db.cliente.find({ nombre: 'Camila Fernández' }); 
+
+// Contar cuántos clientes están registrados
+db.cliente.countDocuments(); 
+
+// Consultas específicas
+
+// Buscar clientes cuyo nombre empiece con la letra 'J'
+db.cliente.find({ nombre: /^J/ }); 
+
+// Clientes que tengan un número de teléfono que empiece con '31'
+db.cliente.find({ telefono: { $regex: /^31/ } }); 
+
+// Listar clientes con direcciones que incluyan 'Calle'
+db.cliente.find({ direccion: /Calle/i }); 
+
+// Mostrar solo nombres y teléfonos de todos los clientes
+db.cliente.find({}, { _id: 0, nombre: 1, telefono: 1 }); 
+
+// Buscar clientes cuya dirección tenga más de 10 caracteres
+db.cliente.find({ $expr: { $gt: [{ $strLenCP: '$direccion' }, 10] } }); 
+
+ // Contar cuántos clientes tienen teléfonos que terminan en '0'
+db.cliente.find({ telefono: { $regex: /0$/ } }).count();
+
+// Ordenar clientes por nombre en orden descendente
+db.cliente.find().sort({ nombre: -1 }); 
+
+// 3. Productos
+// Consultas básicas
+
+// Listar todos los productos disponibles
+db.producto.find().pretty(); 
+
+// Buscar un producto específico por descripción
+db.producto.find({ descripcion: 'MacBook Pro 2020' }); 
+
+// Contar cuántos productos hay en total
+db.producto.countDocuments(); 
+
+// Consultas específicas
+
+// Buscar productos cuyo stock sea menor a 20
+db.producto.find({ stock: { $lt: 20 } }); 
+const idAccesorios = db.categoria.findOne({ nombre: 'Accesorios' })._id;
+
+// Buscar productos asociados a la categoría 'Accesorios'
+db.producto.find({ categoria: idAccesorios }); 
+
+// Productos con descripción que contenga 'SSD'
+db.producto.find({ descripcion: /SSD/i }); 
+
+// Listar productos cuyo stock sea exactamente 10
+db.producto.find({ stock: 10 }); 
+
+// Contar productos con descripción más larga de 15 caracteres
+db.producto.find({ $expr: { $gt: [{ $strLenCP: '$descripcion' }, 15] } }).count(); 
+
+// Mostrar productos ordenados por stock de manera ascendente
+db.producto.find().sort({ stock: 1 }); 
+
+// Mostrar solo descripciones de productos con stock mayor a 30
+db.producto.find({ stock: { $gt: 30 } }, { _id: 0, descripcion: 1 }); 
+
+// 4. Ventas
+// Consultas básicas
+// Listar todas las ventas realizadas
+db.venta.find().pretty(); 
+const idCliente1 = db.cliente.findOne({ nombre: 'Camila Fernández' })._id;
+
+ // Buscar ventas realizadas por un cliente específico
+db.venta.find({ cliente: idCliente1 });
+db.venta.countDocuments(); // Contar cuántas ventas se han realizado
+
+// Consultas específicas
+
+// Buscar ventas en un rango de fechas
+db.venta.find({ fecha: { $gte: ISODate('2024-11-01'), $lte: ISODate('2024-11-05') } }); 
+const idProducto1 = db.producto.findOne({ descripcion: 'MacBook Pro 2020' })._id;
+
+// Ventas que incluyan un producto específico
+db.venta.find({ producto: idProducto1 }); 
+
+// Buscar ventas con cantidades mayores a 3
+db.venta.find({ cantidad: { $gt: 3 } }); 
+
+// Listar ventas ordenadas por fecha de manera descendente
+db.venta.find().sort({ fecha: -1 }); 
+
+// Contar cuántas ventas se hicieron para un producto específico
+db.venta.find({ producto: idProducto1 }).count(); 
+const idClienteTelefono = db.cliente.findOne({ telefono: 3196550000 })._id;
+
+// Buscar ventas hechas por un cliente con un número de teléfono específico
+db.venta.find({ cliente: idClienteTelefono }); 
+
+
+// Mostrar ventas con el nombre del cliente y la descripción del producto
+db.venta.aggregate([
+    {
+        $lookup: {
+            from: 'cliente',
+            localField: 'cliente',
+            foreignField: '_id',
+            as: 'clienteInfo'
+        }
+    },
+    {
+        $lookup: {
+            from: 'producto',
+            localField: 'producto',
+            foreignField: '_id',
+            as: 'productoInfo'
+        }
+    }
+]).pretty(); 
